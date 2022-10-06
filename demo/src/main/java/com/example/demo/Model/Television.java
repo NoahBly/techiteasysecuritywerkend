@@ -1,10 +1,10 @@
 package com.example.demo.Model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table (name = "televisies")
@@ -67,6 +67,16 @@ public class Television {
         this.originalStock = originalStock;
         this.sold = sold;
     }
+
+    @OneToOne
+    RemoteController remoteController;
+
+    @OneToMany(mappedBy = "television")
+    @JsonIgnore
+    List<CIModule> CIModules;
+
+    @ManyToMany(mappedBy = "televisions")
+    List<WallBracket> WallBrackets;
 
     public long getId() {
         return id;
@@ -202,5 +212,21 @@ public class Television {
 
     public void setSold(int sold) {
         this.sold = sold;
+    }
+
+    public RemoteController getRemoteController() {
+        return remoteController;
+    }
+
+    public void setRemoteController(RemoteController remoteController) {
+        this.remoteController = remoteController;
+    }
+
+    public List<CIModule> getCIModules() {
+        return CIModules;
+    }
+
+    public List<WallBracket> getWallBrackets() {
+        return WallBrackets;
     }
 }
