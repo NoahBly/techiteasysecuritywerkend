@@ -24,7 +24,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /*autowire customUserDetailService en jwtRequestFilter*/
 
-
+    CustomUserDetailsService customUserDetailsService;
 
     JwtRequestFilter jwtRequestFilter;
 
@@ -50,11 +50,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
     @Override
     @Bean
     public UserDetailsService userDetailsServiceBean() throws Exception {
-        return  customUserDetailsService;
+        return customUserDetailsService;
     }
 
     @Bean
