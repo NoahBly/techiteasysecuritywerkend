@@ -66,7 +66,7 @@ public class TelevisionController {
         return new ResponseEntity<>(service.updateTelevision(tvdtoinput,id), HttpStatus.OK);
     }
 
-    @PutMapping("/televisions/{id}/remotecontroller")
+    @PutMapping("/televisies/{id}/remotecontroller")
     public ResponseEntity<Object> assignRemotetoTelevision(@PathVariable long id, @RequestBody IdinputDto idinput) {
 
     return new ResponseEntity<>(service.assignRemoteControllertoTelevision(id,idinput.Id), HttpStatus.OK);

@@ -1,13 +1,17 @@
 package com.example.demo.Service;
 
 import com.example.demo.Dto.RemoteControllerDto;
+import com.example.demo.Dto.RemoteControllerInputDto;
 import com.example.demo.Dto.TelevisionDto;
+import com.example.demo.Dto.TelevisionInputDto;
 import com.example.demo.Model.RemoteController;
 import com.example.demo.Model.Television;
 import com.example.demo.Repository.RemoteControllerRepository;
 import com.example.demo.Repository.TelevisionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,25 +53,37 @@ return newtelevision2.getId();
     }
 
 
-    public Television getTelevisionbyID(Long id) {
+    public TelevisionDto getTelevisionbyID(Long id) {
    //     if(!repos.existsById(id)) {
    //         throw new RecordNotFoundException("ID can not be found");
     //    }else {
-            return repos.findById(id).get();
+        Television newTv = repos.findById(id).get();
+        TelevisionDto newTvDto = TelevisionDto.fromTelevision(newTv);
+            return newTvDto;
     //    }
     }
 
 
-    public Iterable<Television> findAllTelevision(){
-        return repos.findAll();
+    public Iterable<TelevisionDto> findAllTelevision(){
+
+       Iterable<Television> televisionlist = repos.findAll();
+       List<TelevisionDto> televisiondtolist = new ArrayList<>();
+    for(Television television : televisionlist) {
+      TelevisionDto tvdto = TelevisionDto.fromTelevision(television);
+        televisiondtolist.add(tvdto);
+    }
+
+
+       return televisiondtolist;
     }
 
     public void deleteByIdTelevision(Long id) {
          repos.deleteById(id);
     }
 
-    public Television updateTelevision(TelevisionDto tvDtoinput, Long id) {
-       Television newtv = getTelevisionbyID(id);
+    public TelevisionDto updateTelevision(TelevisionDto tvDtoinput, Long id) {
+       TelevisionDto newtvdto = getTelevisionbyID(id);
+       Television newtv = TelevisionInputDto.toTelevision(newtvdto);
 
         if (!newtv.getBrand().equals(tvDtoinput.brand)) {
             newtv.setBrand(tvDtoinput.brand);
@@ -101,17 +117,30 @@ return newtelevision2.getId();
             newtv.setVoiceControl(tvDtoinput.voiceControl);
         }if (newtv.isWifi() != tvDtoinput.wifi)  {
             newtv.setWifi(tvDtoinput.wifi);
+        } if(tvDtoinput.remoteController != null && !newtv.getRemoteController().equals(tvDtoinput.remoteController)) {
+            newtv.setRemoteController(RemoteControllerInputDto.toRemoteController((tvDtoinput.remoteController)));
         }
-        repos.save(newtv);
-    return newtv;
+
+
+        TelevisionDto newtvdtoend = TelevisionDto.fromTelevision(repos.save(newtv));
+    return newtvdtoend;
     }
 
-    public Television assignRemoteControllertoTelevision( long idtv, long idremote) {
-        Television newtelevision = getTelevisionbyID(idtv);
-        RemoteController newremotecontroller = repos2.findById(idremote).get();
+    public TelevisionDto assignRemoteControllertoTelevision( long idtv, long idremote) {
+       Optional<Television> newtelevision = repos.findById(idtv);
 
-            newtelevision.setRemoteController(newremotecontroller);
-    repos.save(newtelevision);
-    return newtelevision;
+        Optional<RemoteController> newremotecontroller =  repos2.findById(idremote);
+    if(newtelevision.isPresent() && newremotecontroller.isPresent()) {
+        Television televisionnew = newtelevision.get();
+        RemoteController remotenew = newremotecontroller.get();
+
+        televisionnew.setRemoteController(remotenew);
+
+        TelevisionDto savedTvdto = TelevisionDto.fromTelevision(repos.save(televisionnew));
+
+        return savedTvdto;
+    }else {
+        throw new RuntimeException();
+    }
     }
 }

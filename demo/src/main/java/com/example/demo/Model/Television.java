@@ -1,6 +1,7 @@
 package com.example.demo.Model;
 
 
+import com.example.demo.Dto.RemoteControllerDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

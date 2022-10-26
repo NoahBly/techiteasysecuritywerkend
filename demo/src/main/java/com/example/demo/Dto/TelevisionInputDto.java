@@ -41,25 +41,27 @@ public class TelevisionInputDto {
     @NotEmpty
     public int sold;
 
-    public static Television toTelevision(Television television){
+    public static Television toTelevision(TelevisionDto dto){
         Television tv = new Television();
-
-        tv.setName(television.getName());
-       tv.setBrand(television.getBrand());
-         tv.setPrice(television.getPrice());
-         tv.setAvailableSize(television.getAvailableSize());
-       tv.setRefreshRate(television.getRefreshRate());
-         tv.setScreenType(tv.getScreenType());
-        tv.setScreenQuality(television.getScreenQuality());
-        tv.setSmartTv(television.isSmartTv());
-      tv.setWifi(television.isWifi());
-         tv.setVoiceControl(television.isVoiceControl());
-        tv.setHdr(television.isHdr());
-        tv.setBluetooth(television.isBluetooth());
-         tv.setAmbiLight(television.isAmbiLight());
-         tv.setOriginalStock(television.getOriginalStock());
-        tv.setSold(television.getSold());
-
+        tv.setType(dto.type);
+        tv.setName(dto.name);
+       tv.setBrand(dto.brand);
+         tv.setPrice(dto.price);
+         tv.setAvailableSize(dto.availableSize);
+       tv.setRefreshRate(dto.refreshRate);
+         tv.setScreenType(dto.screenType);
+        tv.setScreenQuality(dto.screenQuality);
+        tv.setSmartTv(dto.smartTv);
+      tv.setWifi(dto.wifi);
+         tv.setVoiceControl(dto.voiceControl);
+        tv.setHdr(dto.hdr);
+        tv.setBluetooth(dto.bluetooth);
+         tv.setAmbiLight(dto.ambiLight);
+         tv.setOriginalStock(dto.originalStock);
+        tv.setSold(dto.sold);
+        if(dto.remoteController != null) {
+            tv.setRemoteController(RemoteControllerInputDto.toRemoteController(dto.remoteController));
+        }
         return tv;
     }
 }
