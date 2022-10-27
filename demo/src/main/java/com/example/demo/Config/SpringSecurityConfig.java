@@ -1,6 +1,4 @@
 package com.example.demo.Config;
-
-
 import com.example.demo.Filter.JwtRequestFilter;
 import com.example.demo.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +15,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /*autowire customUserDetailService en jwtRequestFilter*/
-
     CustomUserDetailsService customUserDetailsService;
-
     JwtRequestFilter jwtRequestFilter;
-
     public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtRequestFilter jwtRequestFilter) {
         this.customUserDetailsService = customUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    public SpringSecurityConfig() {
-    }
-
-    public SpringSecurityConfig(boolean disableDefaults) {
-        super(disableDefaults);
     }
 
     @Autowired
@@ -49,11 +36,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-    @Override
-    @Bean
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return customUserDetailsService;
     }
 
     @Bean
@@ -83,7 +65,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
     }
 
 }
