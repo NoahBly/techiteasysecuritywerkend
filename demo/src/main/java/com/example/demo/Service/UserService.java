@@ -6,6 +6,7 @@ import com.example.demo.Model.Authority;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.Utils.RandomStringGenerator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class UserService {
     /*autowire de juiste repository*/
     UserRepository repos;
+
 
     public UserService(UserRepository repos) {
         this.repos = repos;

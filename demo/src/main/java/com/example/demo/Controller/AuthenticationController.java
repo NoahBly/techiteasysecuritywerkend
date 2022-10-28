@@ -26,10 +26,10 @@ UserDetailsService userDetailsService;
 
 JwtUtil jwtUtil;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsService userDetailService, com.example.demo.Utils.JwtUtil jwtUtil) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, com.example.demo.Utils.JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
-        userDetailService = userDetailsService;
-        jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping(value = "/authenticated")

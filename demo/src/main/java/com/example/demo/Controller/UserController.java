@@ -5,6 +5,7 @@ import com.example.demo.Exceptions.BadRequestException;
 import com.example.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,8 +22,14 @@ public class UserController {
 
     UserService userService;
 
-    public UserController(UserService userService) {
+    PasswordEncoder passwordEncoder;
+
+
+
+
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "")
@@ -45,7 +52,7 @@ public class UserController {
 
     @PostMapping(value = "")
     public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) throws Exception {;
-
+        dto.setPassword(passwordEncoder.encode(dto.password));
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_USER");
 
